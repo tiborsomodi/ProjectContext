@@ -1,0 +1,74 @@
+<html>
+<head>
+<link href="style.css" type="text/css" rel="stylesheet" />
+</head>
+<body>
+<h1>SwitchContext ANT task manual</h1>
+<p>Generates output based on the given template using the given properties as variables. 
+Uses <a href="http://velocity.apache.org/">Velocity</a> template language.</p>
+<h3>Reference</h3>
+<table>
+	<tr>
+		<td>Attribute</td>
+		<td>Description</td>
+		<td>Required</td>
+	</tr>
+	<tr>
+		<td>contextRelativePath</td>
+		<td>Path of context direcory, relative to basedir</td>
+		<td>Yes</td>
+	</tr>
+	<tr>
+		<td>templateDir</td>
+		<td>Name of directory which contains templates. Defaults to
+		"template"</td>
+		<td>No</td>
+	</tr>
+	<tr>
+		<td>propDir</td>
+		<td>Name of directory which contains properties. Defaults to
+		"property"</td>
+		<td>No</td>
+	</tr>
+	<tr>
+		<td>propName</td>
+		<td>Properties file has to located in propDir with name
+		"propName_contextName.props". Default for propName is resourceName</td>
+		<td>No</td>
+	</tr>
+	<tr>
+		<td>resourceName</td>
+		<td>Name of the resource</td>
+		<td>Yes</td>
+	</tr>
+	<tr>
+		<td>contextName</td>
+		<td>Name of the context</td>
+		<td>Yes</td>
+	</tr>
+	<tr>
+		<td>outRelativePath</td>
+		<td>Output's path, relative to basedir</td>
+		<td>Yes</td>
+	</tr>
+</table>
+<h3>Example usage</h3>
+<pre>
+Define the task:
+&lt;taskdef name="switchcontext" classname="com.inepex.projectcontext.SwitchContextTask"&gt;
+	&lt;classpath&gt;
+		&lt;fileset dir="lib"&gt;
+			&lt;include name="*.jar" /&gt;
+		&lt;/fileset&gt;
+	&lt;/classpath&gt;
+&lt;/taskdef&gt;
+</pre>
+<p>"lib" can be change if you use different basedir</p>
+<pre>
+&lt;input message="Please enter requested context name:" addproperty="contextName" /&gt;
+&lt;switchcontext contextRelativePath="ProjectContext/context" resourceName="web.xml" contextName="${contextName}" outRelativePath="ProjectContext/out" /&gt;
+</pre>
+<p>It will look for templates in basedir/ProjectContext/context/templates	and generate output to
+basedir/ProjectContext/out</p>
+</body>
+</html>

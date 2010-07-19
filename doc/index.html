@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>ProjectContext</title>
+</head>
+<body>
+<h1>ProjectContext</h1>
+<p>An ANT task to handle different contexts for a project. A context is a list of name-value pairs. For instance the db-username and the db-password.
+</p>
+<p>Task description: <a href="taskdef.html">description</a>
+<h2>Example</h2>
+<p>You have a web application, which defines its database name in the web.xml as a parameter:</p>
+<pre>
+  &lt;context-param&gt;
+    &lt;param-name&gt;db-name&lt;/param-name&gt;
+    &lt;param-value&gt;productsDb&lt;/param-value&gt;
+  &lt;/context-param&gt;
+</pre>
+<p>For development you have another db: testDb and you set it in web.xml while you are developing your app.
+You have a step in your deployment process, which is easy to forget.
+ProjectContext gives you an ANT tasks, which helps to solve this issue.
+</p>
+<h2>Set up a context</h2>
+<p>Create a folder structure:</p>
+<img src = "images/folderstructure.png"/>
+<p>Content of files:</p>
+<b>web.xml_dev.props</b>
+db-name=testDb
+<b>web.xml_prod.props</b>
+db-name=productsDb
+<b>web.xml</b>
+<pre>
+...
+  &lt;context-param&gt;
+    &lt;param-name&gt;db-name&lt;/param-name&gt;
+    &lt;param-value&gt;${db-name}&lt;/param-value&gt;
+  &lt;/context-param&gt;
+...
+</pre>
+<b>switchContextScript.xml</b>
+<pre>
+&lt;project name="projectcontext" default="switchcontext" basedir="."&gt;
+    &lt;taskdef name="switchcontext" classname="com.inepex.projectcontext.SwitchContextTask"&gt;
+        &lt;classpath&gt;
+            &lt;fileset dir="lib"&gt;
+                &lt;include name="*.jar" /&gt;
+            &lt;/fileset&gt;
+        &lt;/classpath&gt;
+    &lt;/taskdef&gt;
+
+    &lt;target name="switchcontext"&gt;
+        &lt;input message="Please enter requested context name:" addproperty="contextName" /&gt;
+        &lt;switchcontext contextPath="." resourceName="web.xml" contextName="${contextName}" outPath="../out" /&gt;
+    &lt;/target&gt;
+
+&lt;/project&gt;
+</pre>
+<p>After executing this script it will create (or overwrite) a web.xml file in the directory, given as outPath.</p>
+<h2>Tips</h2>
+<ul>
+  <li>
+    You can define more than one switcontext call in a script
+  </li>
+  <li>
+    You can wire the contextName instead of requesting input from user:
+  </li>
+  <ul>
+    <li>
+      &lt;property name="contextName" value = "prod" /&gt;<br>
+    </li>
+  </ul>
+</ul>
+
+<h2>Requirements</h2>
+<ul>
+  <li>
+    Installed ANT
+  </li>
+</ul>
+
+</body>
+</html>

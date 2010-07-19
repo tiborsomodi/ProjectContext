@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="projectcontext" default="switchcontext" basedir="../../">
+	<taskdef name="switchcontext" classname="com.inepex.projectcontext.SwitchContextTask">
+		<classpath>
+			<fileset dir="ProjectContext/context/lib">
+				<include name="*.jar" />
+			</fileset>
+
+		</classpath>
+	</taskdef>
+
+	<target name="switchcontext">
+		<input message="Please enter requested context name:" addproperty="contextName" />
+		<switchcontext contextRelativePath="ProjectContext/context" resourceName="web.xml" contextName="${contextName}" outRelativePath="ProjectContext/out" />
+		
+		<switchcontext contextRelativePath="ProjectContext/context" resourceName="config.xml" contextName="${contextName}" outRelativePath="ProjectContext/out" 
+		propName = "common"/>
+
+	</target>
+
+
+
+</project>
